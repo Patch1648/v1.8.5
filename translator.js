@@ -17,7 +17,9 @@ let reverseProxyUrl = localStorage.getItem('reverseProxyUrl') || '';
 let reverseProxyApiKey = localStorage.getItem('reverseProxyApiKey') || '';
 let reverseProxyModels = JSON.parse(localStorage.getItem('reverseProxyModels')) || [];
 let customModels = JSON.parse(localStorage.getItem('customModels')) || [];
+// 프리필 설정
 let customPrompt = localStorage.getItem('customPrompt') || "# Translation Task Definition\nYou are a professional English-Korean translator specializing in roleplaying content. Your task is to translate English text into natural, fluent Korean while preserving the original tone, context, and cultural nuances. Focus particularly on translating both dialogue and action descriptions in roleplay scenarios.\n\n# Translation Requirements\n\n## Core Translation Principles\n1. Maintain the original meaning and intent\n2. Choose appropriate Korean honorific levels\n3. Convert English expressions to natural Korean equivalents\n4. Keep character personalities consistent through appropriate speech levels\n5. Apply Korean cultural context while preserving original story elements\n\n## Technical Guidelines\n\n### For Dialogue Translation\n- Select appropriate Korean honorific levels based on context:\n  * Formal situations → 합쇼체 (-ㅂ니다/습니다)\n  * Polite casual → 해요체 (-아/어요)\n  * Informal between friends/close relations → 반말 (-아/어)\n  * Professional settings → 존댓말 with proper honorific markers\n\n- Handle English dialogue features:\n  * Convert direct English expressions into natural Korean patterns\n  * Add appropriate sentence-final particles (요, 네, 군요, etc.)\n  * Consider speaker-listener relationship for proper honorifics\n  * Include context-appropriate Korean discourse markers\n\n### For Action Description Translation\n- Transform English action descriptions into natural Korean flow:\n  * Convert SVO (Subject-Verb-Object) to SOV (Subject-Object-Verb) structure\n  * Use appropriate Korean action descriptors and auxiliaries\n  * Add proper Korean particles (조사) based on context\n  * Incorporate Korean-style onomatopoeia and mimetic words\n\n### Cultural Elements\n- Adapt English titles and forms of address to Korean equivalents\n- Use appropriate Korean relationship terms (언니, 오빠, 선배 etc.)\n- Convert Western gestures to Korean cultural equivalents\n- Apply proper level of formality in different situations\n\n## Specific Instructions\n\n1. Initial Analysis\n- Understand the overall context and relationship between characters\n- Identify the appropriate speech levels for each character\n- Note any cultural references that need adaptation\n\n2. Translation Process\n- First pass: Basic translation maintaining core meaning\n- Second pass: Apply proper Korean grammar and particles\n- Final pass: Refine for natural Korean flow and proper honorifics\n\n3. Quality Checks\n- Verify honorific consistency\n- Check particle usage accuracy\n- Confirm natural Korean expression\n- Validate cultural appropriateness\n\n# Format Specifications\n\nInput Format:\n```\n[English text]\n```\n\nOutput Format:\n```\n[Korean translation only]\n```\n\n# Response Rules\n- Provide ONLY the Korean translation\n- Do not offer multiple options or explanations\n- Do not include commentary about the translation choices\n- Do not include the original English text\n- Do not ask questions or suggest alternatives\n- Do not explain honorific choices or grammar points\n\nExample:\n\nInput:\n```\n\"Hello everyone,\" she said with a bright smile. She bowed politely to the group.\n```\n\nOutput:\n```\n\"안녕하세요,\" 그녀가 밝은 미소를 지으며 말했다. 그녀는 일행들에게 공손히 인사를 했다.\n```\n\n## Honorific System Guidelines\n- Business/Formal: \n  * \"Could you please...\" → \"~해 주시겠습니까?\"\n  * \"I would like to...\" → \"~하고 싶습니다\"\n\n- Casual Polite:\n  * \"Can you...\" → \"~할 수 있으세요?\"\n  * \"I think...\" → \"~인 것 같아요\"\n\n- Informal:\n  * \"Hey, do this\" → \"야, 이거 해\"\n  * \"What's up\" → \"뭐 해?\"\n\n## Tense and Aspect Guidelines\n\n### Present Tense\n- Simple present → \"-ㄴ다/는다\" or \"-아/어요\"\n- Present continuous → \"-고  있다\" or \"-고 있어요\"\n- Present habits → \"-ㄴ다/는다\" or relevant time markers\n\n### Past Tense\n- Simple past → \"-았/었다\" or \"-았/ 었어요\"\n- Past perfect → \"-았/었었다\" or \"-았/었었어요\"\n- Past continuous → \"-고 있었다\" or \"-고 있었어요\"\n\n### Future Tense\n- Will/Shall → \"-ㄹ/을 거예요\" or \"-ㄹ/을 것입니다\"\n- Going to → \"-려고 해요\" or \"-기로 했어요\"\n- Future plans → \"-ㄹ/을 예정이다\"\n\n## Style Adaptation\n- Convert English emphasis to Korean particles and endings\n- Adapt English idiomatic expressions to Korean equivalents\n- Maintain character voice through consistent speech patterns\n- Use appropriate Korean discourse markers and fillers\n\n## Common Translation Patterns\n\n### Action Descriptions\nEnglish: \"He slowly walks towards the door\"\nKorean: \"그가 천천히 문쪽으로 걸어간다\"\n\n### Emotional Expressions\nEnglish: \"I'm so excited!\"\nKorean: \"정말 신나요!\" or \"너무 설레요!\"\n\n### Requests\nEnglish: \"Could you help me with this?\"\nKorean: \"이것 좀 도와 주시겠어요?\"\n\n# Error Prevention\n- Avoid awkward literal translations\n- Maintain proper particle usage\n- Keep honorific levels consistent\n- Preserve emotional nuances\n\n# Examples with Context\n\nFormal Business Setting:\n```\n[English]\nChecks the document carefully\n\"I apologize for the delay in processing your request.\"\n\n[Korean]\n서류를 세심히 확인한다\n\"요청하신 건의 처리가 지연되어 대단히 죄송합니다.\"\n```\n\nCasual Friend Setting:\n```\n[English]\nWaves excitedly\n\"Hey! I missed you so much!\"\n\n[Korean]\n신나서 손을 흔든다\n\"야! 너무 보고 싶었어!\"\n```\n\nRemember: Focus on creating natural Korean expressions that convey the same meaning and feeling as the original English text, while appropriately adapting to Korean cultural and linguistic norms.\n\n# Your Translation Task\n\nNow, following all the guidelines above, please translate the following English text into natural, fluent Korean. Consider the context, use appropriate honorific levels, and ensure natural expression; Here is it:";
+let prefillContent = localStorage.getItem('prefillContent') || '';
 let baseColor = localStorage.getItem('baseColor') || (isDarkMode ? '#ffffff' : '#000000');
 let quoteColor = localStorage.getItem('quoteColor') || '#2E5CB8';
 let thoughtColor = localStorage.getItem('thoughtColor') || '#6B4C9A';
@@ -718,6 +720,8 @@ const elements = {
     customPromptInput: document.getElementById('customPrompt'),
     promptTemplate: document.getElementById('promptTemplate'),
     savePromptBtn: document.getElementById('savePrompt'),
+    prefillInput: document.getElementById('prefillInput'),
+    savePrefillBtn: document.getElementById('savePrefill'),
     saveAsTemplateBtn: document.getElementById('saveAsTemplate'),
     baseColorInput: document.getElementById('baseColor'),
     quoteColorInput: document.getElementById('quoteColor'),
@@ -1464,6 +1468,15 @@ function savePrompt() {
     showToast('프롬프트가 저장되었습니다.');
 }
 
+// 프리필 저장
+function savePrefill() {
+    const prefillText = elements.prefillInput.value;
+    prefillContent = prefillText;
+    localStorage.setItem('prefillContent', prefillText);
+    showToast('프리필이 저장되었습니다.');
+        updatePrefillIndicator(); // 인디케이터 업데이트 호출
+}
+
 function saveUserTemplate(name, content) {
     userTemplates[name] = content;
     localStorage.setItem('userTemplates', JSON.stringify(userTemplates));
@@ -1531,8 +1544,9 @@ function setTemplateForDirection(direction) {
         if (currentDirection === direction) {
             elements.customPromptInput.value = templateText;
         }
-        
-        showToast(`${direction === 'koToEn' ? '한→영' : '영→한'} 방향에 템플릿이 설정되었습니다.`);
+    // [추가] 템플릿 설정 후 해당 방향의 인디케이터 업데이트
+    updateTemplateIndicator(direction);
+    showToast(`${direction === 'koToEn' ? '한→영' : '영→한'} 방향에 템플릿이 설정되었습니다.`);
     }
 }
 
@@ -1571,6 +1585,22 @@ function switchTranslationDirection(direction) {
     
     localStorage.setItem('currentDirection', direction);
     showToast(`번역 방향이 ${direction === 'koToEn' ? '한→영' : '영→한'}으로 전환되었습니다.`);
+}
+
+/*********************************************
+ * @description 저장된 프리필 내용 유무에 따라 상태 표시 업데이트
+ *********************************************/
+function updatePrefillIndicator() {
+    const indicator = document.getElementById('prefillIndicator');
+    if (!indicator) return;
+
+    // 저장된 전역 변수 prefillContent를 직접 확인
+    if (prefillContent && prefillContent.trim() !== '') {
+        indicator.textContent = '프리필 적용 중';
+        indicator.style.display = 'block';
+    } else {
+        indicator.style.display = 'none';
+    }
 }
 
 /*********************************************
@@ -2121,19 +2151,34 @@ function handleModelChange(e) {
     updateParamVisibility();
 }
 
-// 프롬프트 템플릿 처리
+// 프롬프트 템플릿 처리 (프리필 추가)
 function handlePromptTemplate(e) {
     const selectedTemplate = e.target.value;
     const savedTemplates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
     
     if (selectedTemplate) {
-        if (promptTemplates[selectedTemplate]) {
-            // 기본 템플릿
-            elements.customPromptInput.value = promptTemplates[selectedTemplate];
-        } else if (savedTemplates[selectedTemplate]) {
-            // 사용자 정의 템플릿
-            elements.customPromptInput.value = savedTemplates[selectedTemplate];
+        const templateContent = promptTemplates[selectedTemplate] || savedTemplates[selectedTemplate];
+
+        if (templateContent) {
+            let newPrompt = '';
+
+            if (typeof templateContent === 'object' && templateContent !== null) {
+                newPrompt = templateContent.prompt || '';
+            } else {
+                newPrompt = templateContent;
+            }
+            
+            elements.customPromptInput.value = newPrompt;
+            customPrompt = newPrompt;
+            localStorage.setItem('customPrompt', customPrompt);
+
+            const templateDisplayName = templateNames[selectedTemplate] || selectedTemplate;
+            showToast(`'${templateDisplayName}' 템플릿이 적용되었습니다.`);
         }
+    } else {
+        elements.customPromptInput.value = '';
+        customPrompt = '';
+        localStorage.setItem('customPrompt', '');
     }
 }
 
@@ -2201,21 +2246,23 @@ function saveCustomPrompt() {
     }
 }
 
-// 현재 프롬프트를 템플릿으로 저장
+// 현재 프롬프트를 템플릿으로 저장 (프리필 추가)
 function saveAsTemplate() {
     const templateName = prompt('템플릿 이름을 입력하세요:');
     if (templateName) {
         const currentPrompt = elements.customPromptInput.value.trim();
+        const currentPrefill = elements.prefillInput.value.trim(); // 프리필 내용도 가져오기
         const savedTemplates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
         
-        // 새 템플릿 저장
-        savedTemplates[templateName] = currentPrompt;
+        // 프롬프트와 프리필을 하나의 객체로 묶어서 저장
+        savedTemplates[templateName] = {
+            prompt: currentPrompt,
+            prefill: currentPrefill
+        };
         localStorage.setItem('promptTemplates', JSON.stringify(savedTemplates));
         
-        // 템플릿 옵션 추가
         updatePromptTemplateOptions();
-        
-        showToast('템플릿이 저장되었습니다.');
+        showToast('프롬프트와 프리필이 템플릿으로 함께 저장되었습니다.');
     }
 }
 
@@ -2339,7 +2386,11 @@ function saveToHistory(source, translated, model) {
 
 async function translateText() {
     if (elements.loading.style.display === 'flex') return;
+
+    // 번역 직전에 프리필 입력창의 현재 값을 가져와 변수에 반영합니다.
+    prefillContent = elements.prefillInput.value;
     
+    // [수정] 중복 선언되었던 부분을 하나로 합쳤습니다.
     const sourceText = elements.sourceText.value.trim();
     if (!sourceText) {
         showToast('번역할 텍스트를 입력해주세요.', 'error');
@@ -2431,7 +2482,6 @@ async function translateText() {
             showToast('번역이 완료되었습니다.');
 
             saveContent();
-
         }
     } catch (error) {
         console.error('Translation error:', error);
@@ -2978,9 +3028,22 @@ elements.setTemplateButtons.forEach((button, index) => {
 });
 
 // Gemini로 번역
+// translator.js 파일에서 'async function translateWithGemini(text, apiKey)'를 찾으세요.
+
+// translator.js
+
 async function translateWithGemini(text, apiKey) {
     console.log('🔵 Gemini API 호출 시작 - 모델:', selectedModel);
-    
+
+    // 프롬프트, 프리필, 텍스트를 하나의 명확한 요청으로 결합
+    let fullPrompt;
+    if (prefillContent && prefillContent.trim() !== '') {
+        console.log('📝 프리필 적용 (명령의 일부로):', prefillContent);
+        fullPrompt = `${customPrompt}\n\n${prefillContent.trim()}\n\n${text}`;
+    } else {
+        fullPrompt = `${customPrompt}\n\n${text}`;
+    }
+
     // 리버스 프록시 사용 시 OpenAI 호환 형식으로 요청
     if (useReverseProxy && reverseProxyUrl) {
         console.log('🔄 리버스 프록시를 통한 요청:', reverseProxyUrl);
@@ -2993,9 +3056,8 @@ async function translateWithGemini(text, apiKey) {
                 },
                 body: JSON.stringify({
                     model: selectedModel,
-                    messages: [
-                        { role: "user", content: `${customPrompt}\n${text}` }
-                    ],
+                    // 메시지 구조를 단순화하여 하나의 user 메시지만 전송
+                    messages: [{ role: "user", content: fullPrompt }],
                     temperature: modelParams.temperature,
                     max_tokens: modelParams.maxTokens,
                     top_p: modelParams.topP
@@ -3008,11 +3070,11 @@ async function translateWithGemini(text, apiKey) {
             }
 
             const data = await response.json();
-            
+
             if (!data.choices || data.choices.length === 0) {
                 throw new Error('📝 번역 결과를 받을 수 없습니다.');
             }
-            
+
             return data.choices[0].message.content;
         } catch (error) {
             if (error.name === 'TypeError' && error.message.includes('fetch')) {
@@ -3030,10 +3092,9 @@ async function translateWithGemini(text, apiKey) {
         HARM_CATEGORY_DANGEROUS_CONTENT: 'HARM_CATEGORY_DANGEROUS_CONTENT'
     }).map(category => ({
         category: category,
-        threshold: 'BLOCK_NONE', // 기본값으로 BLOCK_NONE 설정
+        threshold: 'BLOCK_NONE',
     }));
 
-    // Flash 모델들은 threshold를 OFF로 설정
     const flashModels = [
         'gemini-2.5-flash-preview-05-20', 'gemini-2.5-flash-preview-04-17',
         'gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.0-flash-exp',
@@ -3050,16 +3111,16 @@ async function translateWithGemini(text, apiKey) {
 
     try {
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`,
-            {
+            `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    // contents 구조 단순화
                     contents: [{
                         parts: [{
-                            text: `${customPrompt}\n${text}`
+                            text: fullPrompt
                         }]
                     }],
                     generationConfig: {
@@ -3072,11 +3133,9 @@ async function translateWithGemini(text, apiKey) {
                 })
             }
         );
-
+        
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            
-            // 상세한 오류 메시지 제공
             if (response.status === 400) {
                 if (errorData.error?.message?.includes('API key')) {
                     throw new Error('❌ API 키가 유효하지 않습니다. 설정에서 올바른 Gemini API 키를 입력해주세요.');
@@ -3099,42 +3158,29 @@ async function translateWithGemini(text, apiKey) {
             } else if (response.status >= 500) {
                 throw new Error('🔧 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             }
-            
             throw new Error(`❌ Gemini API 오류 (${response.status}): ${errorData.error?.message || '알 수 없는 오류'}`);
         }
 
         const data = await response.json();
-        
-        // 응답 검증
         if (!data.candidates || data.candidates.length === 0) {
             throw new Error('📝 번역 결과를 생성할 수 없습니다. 입력 텍스트를 확인하거나 다른 모델을 시도해보세요.');
         }
-        
         const candidate = data.candidates[0];
-        
-        // 안전 필터링으로 인한 차단 확인
         if (candidate.finishReason === 'SAFETY') {
             throw new Error('🛡️ 입력 내용이 안전 필터에 의해 차단되었습니다. 다른 표현으로 시도해보세요.');
         }
-        
-        // 길이 제한으로 인한 차단 확인
         if (candidate.finishReason === 'MAX_TOKENS') {
             console.warn('⚠️ 응답이 최대 토큰 수로 인해 잘렸습니다.');
             showToast('⚠️ 응답이 길어서 일부가 잘렸을 수 있습니다.', 'warning', 5000);
         }
-        
         if (!candidate.content || !candidate.content.parts || candidate.content.parts.length === 0) {
             throw new Error('📭 빈 응답을 받았습니다. 다시 시도해주세요.');
         }
-        
-        // 텍스트 추출
         const textParts = candidate.content.parts.filter(part => part.text);
         if (textParts.length === 0) {
             throw new Error('📄 텍스트 응답을 찾을 수 없습니다.');
         }
-        
         return textParts.map(part => part.text).join('');
-        
     } catch (error) {
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
             throw new Error('🌐 네트워크 연결을 확인해주세요.');
@@ -3151,6 +3197,12 @@ async function translateWithOpenAI(text, apiKey) {
     console.log('🟠 OpenAI API 호출 시작 - 모델:', selectedModel);
     
     try {
+        let fullPrompt = `${customPrompt}\n${text}`;
+        if (prefillContent && prefillContent.trim() !== '') {
+                fullPrompt += `\n\n${prefillContent.trim()}`;
+            }
+            fullPrompt += `\n${text}`;
+        
         const baseUrl = useReverseProxy && reverseProxyUrl ? 
             `${reverseProxyUrl.replace(/\/$/, '')}/v1/chat/completions` : 
             'https://api.openai.com/v1/chat/completions';
@@ -3165,7 +3217,7 @@ async function translateWithOpenAI(text, apiKey) {
                 model: selectedModel,
                 messages: [
                     { role: "system", content: "How can I help you?" },
-                    { role: "user", content: `${customPrompt}\n${text}` }
+                    { role: "user", content: fullPrompt }
                 ],
                 temperature: modelParams.temperature,
                 max_tokens: modelParams.maxTokens,
@@ -3216,11 +3268,17 @@ async function translateWithAnthropic(text, apiKey) {
         'https://tincanstranslator.antinomyanonymity.workers.dev/';
 
     try {
+        let fullPrompt = `${customPrompt}\n${text}`;
+        if (prefillContent && prefillContent.trim() !== '') {
+                fullPrompt += `\n\n${prefillContent.trim()}`;
+            }
+            fullPrompt += `\n${text}`;
+        
         const requestBody = useReverseProxy ? {
             model: selectedModel,
             messages: [{
                 role: "user",
-                content: `${customPrompt}\n${text}`
+                content: fullPrompt
             }],
             max_tokens: modelParams.maxTokens,
             temperature: modelParams.temperature
@@ -3307,6 +3365,10 @@ async function translateWithCohere(text, apiKey) {
     console.log('🔵 Cohere API 호출 시작 - 모델:', selectedModel);
     
     try {
+            let fullPrompt = `${customPrompt}\n${text}`;
+            if (prefillContent && prefillContent.trim() !== '') {
+                fullPrompt += `\n\n${prefillContent}`;
+            }
         const baseUrl = useReverseProxy && reverseProxyUrl ? 
             `${reverseProxyUrl.replace(/\/$/, '')}/v1/chat/completions` : 
             'https://api.cohere.ai/v2/chat';
@@ -3323,7 +3385,7 @@ async function translateWithCohere(text, apiKey) {
             model: selectedModel,
             messages: [{
                 role: "user",
-                content: `${customPrompt}\n${text}`
+                content: fullPrompt
             }],
             temperature: modelParams.temperature,
             max_tokens: modelParams.maxTokens
@@ -3748,6 +3810,7 @@ function setupEventListeners() {
     elements.addRuleBtn?.addEventListener('click', handleAddRule);
     elements.translateBtn?.addEventListener('click', translateText);
     elements.savePromptBtn?.addEventListener('click', saveCustomPrompt);
+    elements.savePrefillBtn?.addEventListener('click', savePrefill);
     elements.baseColorInput?.addEventListener('change', handleColorChange);
     elements.quoteColorInput?.addEventListener('change', handleColorChange);
     elements.thoughtColorInput?.addEventListener('change', handleColorChange);
@@ -3761,6 +3824,19 @@ function setupEventListeners() {
     elements.closeModalBtn?.addEventListener('click', () => elements.shortcutModal.style.display = 'none');
     elements.promptTemplate?.addEventListener('change', handlePromptTemplate);
     elements.saveAsTemplateBtn?.addEventListener('click', saveAsTemplate);
+
+    // 요청 JSON 다운로드 버튼 이벤트 리스너
+    const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+    if (downloadJsonBtn) {
+        downloadJsonBtn.addEventListener('click', downloadRequestJson);
+    }
+    
+    // 전체 JSON 다운로드 버튼 이벤트 리스너
+    const exportAllSettingsBtn = document.getElementById('exportAllSettingsBtn');
+    if (exportAllSettingsBtn) {
+        // `exportSettings`는 `translator.js`의 '데이터 관리 함수들' 섹션에 이미 있는 함수입니다.
+        exportAllSettingsBtn.addEventListener('click', exportSettings);
+    }
 
     // 텍스트 입력 시 자동 저장 및 카운터 업데이트
     elements.sourceText?.addEventListener('input', (e) => {
@@ -3908,6 +3984,7 @@ function restoreApiKeys() {
 function restoreSettings() {
     if (selectedModel) elements.modelSelect.value = selectedModel;
     if (customPrompt) elements.customPromptInput.value = customPrompt;
+    if (prefillContent) elements.prefillInput.value = prefillContent;
     if (baseColor) elements.baseColorInput.value = baseColor;
     if (quoteColor) elements.quoteColorInput.value = quoteColor;
     if (thoughtColor) elements.thoughtColorInput.value = thoughtColor;
@@ -4964,4 +5041,109 @@ function displayGlossaryTerms(searchTerm = '', contextFilter = 'all') {
         
         elements.glossaryList.appendChild(termElement);
     });
+}
+/**
+ * @description 템플릿에 프리필이 포함되었는지 여부를 UI에 표시하는 함수
+ * @param {string} direction - 'koToEn' 또는 'enToKo'
+ */
+function updateTemplateIndicator(direction) {
+    const templateData = (direction === 'koToEn') ? savedKoToEnTemplate : savedEnToKoTemplate;
+    const templateNameElement = (direction === 'koToEn') ? elements.templateNameKoToEn : elements.templateNameEnToKo;
+
+    if (!templateNameElement) return;
+
+    // 기존 인디케이터 제거
+    const existingIndicator = templateNameElement.querySelector('.prefill-indicator');
+    if (existingIndicator) {
+        existingIndicator.remove();
+    }
+
+    // 프리필 내용 확인 (템플릿이 객체 형태일 경우)
+    let hasPrefill = false;
+    try {
+        const parsedData = JSON.parse(templateData);
+        if (parsedData && parsedData.prefill && parsedData.prefill.trim() !== '') {
+            hasPrefill = true;
+        }
+    } catch (e) {
+        // 파싱 실패 시, 문자열 자체로 프리필이 있는지 확인 (하위 호환성)
+        // 이 로직은 불완전하므로, 객체 형식을 표준으로 사용합니다.
+    }
+    
+    // 신규 방식: 템플릿 저장 시 객체로 저장되므로, 해당 객체에 prefill 속성이 있는지 확인
+    const templates = JSON.parse(localStorage.getItem('promptTemplates') || '{}');
+    const templateName = localStorage.getItem(direction === 'koToEn' ? 'koToEnTemplate' : 'enToKoTemplate');
+    if (templates[templateName] && templates[templateName].prefill) {
+        hasPrefill = true;
+    }
+
+
+    if (hasPrefill) {
+        const indicator = document.createElement('span');
+        indicator.className = 'prefill-indicator';
+        indicator.title = '이 템플릿에는 프리필이 포함되어 있습니다.';
+        indicator.textContent = '📝'; // 아이콘 또는 텍스트
+        templateNameElement.prepend(indicator); // 이름 앞에 아이콘 추가
+    }
+}
+/**
+ * @description 현재 설정으로 API에 보낼 요청 JSON을 생성하고 다운로드하는 함수
+ */
+function downloadRequestJson() {
+    const sourceText = elements.sourceText.value.trim();
+    if (!sourceText) {
+        showToast('디버깅할 텍스트를 먼저 입력해주세요.', 'error');
+        return;
+    }
+
+    const modelProvider = getModelProvider(selectedModel);
+    let requestBody;
+
+    // 각 API 제공자에 맞는 요청 본문 생성
+    if (modelProvider === 'gemini' && !(useReverseProxy && reverseProxyUrl)) {
+        // Gemini 고유 포맷
+        const contents = [{ role: "user", parts: [{ text: `${customPrompt}\n${sourceText}` }] }];
+        if (prefillContent && prefillContent.trim() !== '') {
+            contents.push({ role: "model", parts: [{ text: prefillContent.trim() }] });
+        }
+        requestBody = {
+            contents: contents,
+            generationConfig: {
+                temperature: modelParams.temperature,
+                topK: modelParams.topK,
+                topP: modelParams.topP,
+                maxOutputTokens: modelParams.maxTokens
+            },
+            // safetySettings는 실제 요청에서만 포함
+        };
+    } else {
+        // OpenAI 호환 포맷 (OpenAI, Anthropic, Cohere, 프록시 사용 Gemini)
+        const messages = [
+            { role: "system", content: customPrompt },
+            { role: "user", content: sourceText }
+        ];
+        if (prefillContent && prefillContent.trim() !== '') {
+            messages.push({ role: "assistant", content: prefillContent.trim() });
+        }
+        requestBody = {
+            model: selectedModel,
+            messages: messages,
+            temperature: modelParams.temperature,
+            max_tokens: modelParams.maxTokens,
+            top_p: modelParams.topP
+        };
+    }
+
+    // JSON 파일 생성 및 다운로드
+    const blob = new Blob([JSON.stringify(requestBody, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `request-debug-${selectedModel}-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('요청 JSON 파일이 다운로드되었습니다.', 'success');
 }
