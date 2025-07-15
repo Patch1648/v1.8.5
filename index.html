@@ -36,10 +36,13 @@
             <h1>🤖 깡갤 번역기</h1>
             <div class="version-info">
                 <span class="version-tag" id="versionTag"></span>
-                <button class="changelog-btn" title="업데이트 내역">
-                    💡
-                    <span class="update-notification" id="updateNotification"></span>
-                </button>
+            <button class="changelog-btn" title="업데이트 내역">
+                💡
+                <span class="update-notification" id="updateNotification"></span>
+            </button>
+            <button id="exportAllSettingsBtn" class="changelog-btn" title="전체 설정 내보내기">
+                🐞
+            </button>
             </div>
                     
             <!-- 업데이트 내역 모달 추가 -->
@@ -329,7 +332,18 @@
             <textarea id="customPrompt" rows="3"></textarea>
             <button id="savePrompt" class="btn-small">프롬프트 저장</button>
         </div>
-        
+        <!--프리필 설정-->
+        <div class="prompt-section_2">
+            <label for="prefillInput">프리필 설정</label>
+                <button id="downloadJsonBtn" class="changelog-btn" title="요청 JSON 다운로드">
+                    🐛
+                </button>
+            <textarea id="prefillInput" rows="2" placeholder="AI가 번역 결과 앞에 출력할 문장을 입력하세요. (예: understand. I will start translating now.)"></textarea>
+            <div id="prefillIndicator" style="display: none; color: #4285f4; font-size: 12px; margin-top: 5px;"></div>
+            <div class="prefill-actions">
+                <button id="savePrefill" class="btn-small">프리필 저장</button>
+            </div>
+        </div>
         <!-- 번역에 적용할 용어집 카테고리 선택 -->
         <div class="glossary-category-section">
             <label for="translationGlossaryContext">번역에 적용할 용어집 카테고리</label>
